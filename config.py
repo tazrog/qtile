@@ -72,7 +72,9 @@ keys = [
     Key([mod], "F12", lazy.spawn("eqtile")),
     Key([mod], "e", lazy.spawn("/home/tazrog/Programs/./tutanota-desktop-linux.AppImage")),
     Key([mod], "b", lazy.spawn("/home/tazrog/BurpSuiteCommunity/./BurpSuiteCommunity")),
-
+    Key([mod], "t", lazy.spawn("/home/tazrog/Programs/tor-browser_en-US/Browser/./start-tor-browser")),
+    Key([mod], "a", lazy.spawn("atom")),
+    
     #MonadTall Key Bindings
     Key([mod], "h", lazy.layout.left()),
     Key([mod], "l", lazy.layout.right()),
@@ -143,7 +145,7 @@ screens = [
                 widget.Pacman(),
                 widget.Sep(),
                 widget.TextBox(text=''),
-                widget.ThermalSensor(metric=False, threshold=140, padding=3),
+                widget.ThermalSensor(metric=False, threshold=160, padding=3),
                 widget.TextBox(text='', padding=7),
                 widget.Memory(),
                 widget.MemoryGraph(),
@@ -152,8 +154,8 @@ screens = [
                 widget.TextBox(text='', padding=7),
                 widget.Volume(),
                 widget.Systray(padding=7),
-                widget.Clock(format='%m-%d-%Y %a %I:%M %p', padding =8),
-                widget.QuickExit(default_text='',countdown_start=3, padding=7),
+                widget.Clock(format='%m/%d/%y %a %H%M', padding =7),
+                widget.QuickExit(default_text='     ',countdown_start=3),
             ],
             24,
         ),
