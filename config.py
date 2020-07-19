@@ -156,7 +156,12 @@ screens = [
                 widget.Volume(),
                 widget.Systray(padding=7),
                 widget.Clock(format='%m/%d/%y %a %H%M', padding =7),
-                widget.QuickExit(default_text='     ',countdown_start=3),
+                widget.Sep(linewidth=2),
+                widget.QuickExit(default_text='  ',countdown_start=5),
+                widget.Sep(linewidth=2),
+                widget.QuickRestart(default_text= '  '),
+                widget.Sep(linewidth=2),
+
             ],
             24,
         ),
