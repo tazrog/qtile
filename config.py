@@ -33,6 +33,7 @@ import subprocess
 from typing import List  # noqa: F401
 
 mod = "mod4"
+
 @hook.subscribe.startup_once
 def autostart():
     home = os.path.expanduser('~/.config/qtile/autostart.sh')
@@ -43,7 +44,7 @@ keys = [
     Key([], "XF86AudioMute", lazy.spawn("amixer -q set Master toggle")),
     Key([], "XF86AudioLowerVolume", lazy.spawn("amixer -1 -D pulse sset Master 1%-")),
     Key([], "XF86AudioRaiseVolume", lazy.spawn("amixer -q -D pulse sset Master 1%+")),
-      
+
     # Switch window focus to other pane(s) of stack
     Key([mod], "space", lazy.layout.next()),
 
@@ -74,7 +75,8 @@ keys = [
     Key([mod], "b", lazy.spawn("/home/tazrog/BurpSuiteCommunity/./BurpSuiteCommunity")),
     Key([mod], "t", lazy.spawn("/home/tazrog/Programs/tor-browser_en-US/Browser/./start-tor-browser")),
     Key([mod], "a", lazy.spawn("atom")),
-    
+    Key([mod], "s", lazy.spawn("/opt/sublime_text/./sublime_text")),
+
     #MonadTall Key Bindings
     Key([mod], "h", lazy.layout.left()),
     Key([mod], "l", lazy.layout.right()),
@@ -89,7 +91,6 @@ keys = [
     Key([mod], "n", lazy.layout.normalize()),
     Key([mod], "o", lazy.layout.maximize()),
     Key([mod, "shift"], "space", lazy.layout.flip()),
-    
 ]
 
 groups = [Group(i) for i in "12345678"]
@@ -109,11 +110,11 @@ for i in groups:
 layouts = [
     layout.MonadTall(border_focus='#00ffab', border_normal='#ff0000'),
     layout.Max(),
-    layout.Stack(num_stacks=2),
+    layout.Stack(num_stacks=2,border_focus='#00ffab', border_normal='#ff0000'),
     # Try more layouts by unleashing below layouts.
     # layout.Bsp(),
     # layout.Columns(),
-    layout.Matrix(),
+    layout.Matrix(border_focus='#00ffab', border_normal='#ff0000'),
     #layout.MonadTall(),
     #layout.MonadWide(),
     # layout.RatioTile(),
