@@ -5,6 +5,7 @@
 # Copyright (c) 2012 Craig Barnes
 # Copyright (c) 2013 horsik
 # Copyright (c) 2013 Tao Sauvage
+# Copyright (c) 2020 tazrog
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +34,7 @@ import subprocess
 from typing import List  # noqa: F401
 
 mod = "mod4"
+term="xterm"
 
 @hook.subscribe.startup_once
 def autostart():
@@ -42,7 +44,7 @@ def autostart():
 keys = [
     # Sound
     Key([], "XF86AudioMute", lazy.spawn("amixer -q set Master toggle")),
-    Key([], "XF86AudioLowerVolume", lazy.spawn("amixer -1 -D pulse sset Master 1%-")),
+    Key([], "XF86AudioLowerVolume", lazy.spawn("amixer -q -D pulse sset Master 1%-")),
     Key([], "XF86AudioRaiseVolume", lazy.spawn("amixer -q -D pulse sset Master 1%+")),
 
     # Switch window focus to other pane(s) of stack
@@ -56,7 +58,7 @@ keys = [
     # Unsplit = 1 window displayed, like Max layout, but still with
     # multiple stack panes
     Key([mod, "shift"], "Return", lazy.layout.toggle_split()),
-    Key([mod], "Return", lazy.spawn("termite")),
+    Key([mod], "Return", lazy.spawn("xterm")),
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout()),
@@ -93,7 +95,17 @@ keys = [
     Key([mod, "shift"], "space", lazy.layout.flip()),
 ]
 
-groups = [Group(i) for i in "12345678"]
+groups = [
+    Group('1'),
+    Group('2'),
+    Group('3'),
+    Group('4'),
+    Group('5'),
+    Group('6'),
+    Group('7'),
+    Group('8'),
+
+]
 
 for i in groups:
     keys.extend([
@@ -109,8 +121,8 @@ for i in groups:
 
 layouts = [
     layout.MonadTall(border_focus='#00ffab', border_normal='#ff0000'),
-    layout.Max(),
-    layout.Stack(num_stacks=2,border_focus='#00ffab', border_normal='#ff0000'),
+    #layout.Max(),
+    #layout.Stack(num_stacks=2,border_focus='#00ffab', border_normal='#ff0000'),
     # Try more layouts by unleashing below layouts.
     # layout.Bsp(),
     # layout.Columns(),
@@ -119,7 +131,7 @@ layouts = [
     #layout.MonadWide(),
     # layout.RatioTile(),
     # layout.Tile(),
-    # layout.TreeTab(),
+    layout.TreeTab(),
     # layout.VerticalTile(),
     # layout.Zoomy(),
 ]
@@ -135,29 +147,40 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.CurrentLayoutIcon(padding=7),
+                widget.CurrentLayoutIcon(padding=5),
                 #widget.CurrentLayout(),
                 widget.GroupBox(),
                 widget.Sep(linewidth=2),
-                widget.Prompt(),
+                #widget.Prompt(),
                 widget.WindowName(),
                 widget.Cmus(padding=5),
-                widget.TextBox('Updates-'),
-                widget.Pacman(),
+                widget.TextBox('Updates-', 
+                    mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(term + ' -e sudo pacman -Syu')}),
+                widget.Pacman(mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(term + ' -e sudo pacman -Syu')}),
                 widget.Sep(),
                 widget.TextBox(text=''),
-                widget.ThermalSensor(metric=False, threshold=160, padding=3),
-                widget.TextBox(text='', padding=7),
-                widget.Memory(),
-                widget.MemoryGraph(),
-                widget.CPU(padding=7),
-                widget.CPUGraph(type='box', fill_color='00ffab',border_color='00ffab'),
-                widget.TextBox(text='', padding=7),
+                widget.ThermalSensor(metric=False, 
+                    threshold=160, 
+                    padding=3),
+                widget.TextBox(text='', 
+                    padding=5),
+                widget.Memory(mouse_callbacks ={'Button1': lambda qtile: qtile.cmd_spawn(term + ' -e htop')}),
+                widget.MemoryGraph(mouse_callbacks ={'Button1': lambda qtile: qtile.cmd_spawn(term + ' -e htop')}),
+                widget.CPU(padding=5, 
+                    mouse_callbacks ={'Button1': lambda qtile: qtile.cmd_spawn(term + '- e htop')}),
+                widget.CPUGraph(type='box', 
+                    fill_color='00ffab',
+                    border_color='00ffab', 
+                    mouse_callbacks ={'Button1': lambda qtile: qtile.cmd_spawn(term + ' -e htop')}),
+                widget.TextBox(text='', 
+                    padding=5),
                 widget.Volume(),
-                widget.Systray(padding=7),
-                widget.Clock(format='%m/%d/%y %a %H%M', padding =7),
+                widget.Systray(padding=5),
+                widget.Clock(format='%m/%d/%y %a %H%M', 
+                    padding =5),
                 widget.Sep(linewidth=2),
-                widget.QuickExit(default_text='  ',countdown_start=5),
+                widget.QuickExit(default_text='  ',
+                    countdown_start=5),
                 widget.Sep(linewidth=2),
                 widget.QuickRestart(default_text= '  '),
                 widget.Sep(linewidth=2),
